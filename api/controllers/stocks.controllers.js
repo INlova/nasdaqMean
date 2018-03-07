@@ -7,18 +7,18 @@ module.exports.stocksGetAll = function(req, res){
 	var maxCount = 3288;
 	
 	if(req.query && req.query.offset){
-		offset = parseInt(req.query.offset, 10);  //query parameters come back as a string
+		offset = parseInt(req.query.offset, 10);  
 	}
 	
 	if(req.query && req.query.count){
-		count = parseInt(req.query.count, 10);  //query parameters come back as a string
+		count = parseInt(req.query.count, 10);  
 	}
 	
 	if(isNaN(offset) || isNaN(count)){
 		res
 			.status(400)
 			.json({
-				"message": "Offset and Count should be numbers"
+				"message": "If supplied in querystring count and offset should be numbers"
 			});
 		return;
 	}
@@ -26,7 +26,7 @@ module.exports.stocksGetAll = function(req, res){
 	 	res
 	 		.status(400)
 	 		.json({
-	 			"message": "Count limit has exceeded the limit of " + maxCount
+	 			"message": "Count limit of " + maxCount + " exceeded"
 	 		});
 	 	return;
 	 }
@@ -54,7 +54,7 @@ module.exports.stocksGetOne = function(req, res){
 	console.log("GET stockId", stockId);
 	
 	Stock
-		.findBySymbol(stockId)
+		.findById(stockId)
 		.exec(function(err, doc){
 			var response = {
 				status: 200,
@@ -76,12 +76,12 @@ module.exports.stocksGetOne = function(req, res){
 			});
 		};
 		
-/* module.exports.stocksSearchOne = function(req, res){
-	var stockSymbol = req.params.symbol;
-	console.log("GET stock symbol " + stockSymbol);
+ module.exports.stocksSearchOne = function(req, res){
+	var Symbol = req.params.symbol;
+	console.log("GET stock symbol " , Symbol);
 	
 	Stock
-		.find({Symbol: stockSymbol})
+		.findOne({Symbol: Symbol})
 		.exec(function(err, stock){
 			var response = {
 				status: 200,
@@ -102,5 +102,5 @@ module.exports.stocksGetOne = function(req, res){
 				.json(response.message);	
 			});
 		};		
-		*/
+		
 	
